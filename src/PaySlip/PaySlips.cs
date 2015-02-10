@@ -4,10 +4,10 @@ using System.Windows.Forms;
 
 namespace Thuraiya
 {
-	public class PaySlip : RTLForm
+	public class PaySlips : RTLForm
 	{
-		public PaySlip() : base() {
-			Text = ar("Pay Slip");
+		public PaySlips() : base() {
+			Text = ar("Pay Slips");
 		}
 	}
 }
