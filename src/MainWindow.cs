@@ -79,11 +79,19 @@ namespace Thuraiya
 
 		public void CalendarAction ()
 		{
-			Calendar cal = new Calendar (2015);
+			Calendar cal = new Calendar ();
 			cal.MdiParent = _this;
 			cal.Show ();
 		}
 
+		public void Pay_SlipsAction ()
+		{
+			PaySlips psl = new PaySlips();
+			psl.MdiParent = _this;
+			psl.Show ();
+		}
+		
+		
 		public void NationalitiesAction ()
 		{
 			Nationalities nat = new Nationalities();

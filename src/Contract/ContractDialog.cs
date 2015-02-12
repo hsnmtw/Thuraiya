@@ -64,7 +64,9 @@ namespace Thuraiya
 		}
 
 		private void PaySlipsAction(object s,EventArgs ea){
-			new PaySlipsDialog(id).ShowDialog();
+			new PaySlipDialog(id,client.Text).ShowDialog();
+			ReCalculateBalance();
+			ReloadPaySlips();
 		}
 		
 		private void ConvertDateAction(object s,EventArgs ea){

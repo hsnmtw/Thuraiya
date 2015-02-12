@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Thuraiya{
@@ -32,8 +33,14 @@ namespace Thuraiya{
 	{
 		public CustomDataGridView() : base()
 		{
+			AllowUserToAddRows = false;
+			AllowUserToDeleteRows = false;
 			AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
 			AllowUserToOrderColumns = false;
+			ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+			ColumnHeadersDefaultCellStyle.BackColor = Color.Black;
+			AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+			ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 			AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.Single;
 			CellBorderStyle = DataGridViewCellBorderStyle.Single;

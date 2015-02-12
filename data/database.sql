@@ -70,11 +70,25 @@ select c.mobile,c.name,n.country,c.govid,c.govid_doi,c.govid_poi,c.address,c.tel
  where c.nationality=n.id
  order by 2 asc;
 
+CREATE VIEW thrdb.v_payslips AS
+ select a.id `ID`, a.contract `Contract`, a.paied `Paied`, a.on_date `On Date`,a.notes `Notes`,c.name `Client`
+   from thrdb.payslip a,
+		thrdb.contract b,
+		thrdb.client c
+  where a.contract = b.id
+    and b.client = c.mobile
+  order by c.name,b.id,a.id; 
+
+CREATE VIEW thrdb.v_calendar AS
+select on_date
+  from contract
+ where on_date between '2015-01-01' and '2015-12-31';
+
 begin;
 
 insert into thrdb.config(prp,val) values
-  ('m_Menu','m_File,m_Reports,m_Help'),
-  ('m_File','Calendar,-,Contracts,Occasions,-,Clients,Pay_Slips,-,Nationalities,-,Exit'),
+  ('m_Menu','m_File,m_Help'),
+  ('m_File','Calendar,-,Contracts,-,Clients,Pay_Slips,-,Nationalities,-,Exit'),
   ('m_Edit',''),
   ('m_Reports',''),
   ('m_Help','Date_Conversion,-,About'),
@@ -127,6 +141,7 @@ insert into thrdb.payslip (id,contract,on_date,paied) values
 insert into thrdb.lang(english,arabic) values
 ('File','صيانة البيانات'),
 ('Client','الزبون'),
+('Contract','العقد'),
 ('Address','العنوان'),
 ('Tel 1','الهاتف 1'),
 ('Tel 2','الهاتف 2'),
@@ -136,7 +151,7 @@ insert into thrdb.lang(english,arabic) values
 ('NID DOI','تاريخ الاصدار'),
 ('NID POI','مكان الاصدار'),
 ('NID','رقم الهوية'),
-
+('Notes','ملاحظات'),
 ('govid_doi','تاريخ الاصدار'),
 ('govid_poi','مكان الاصدار'),
 ('govid','رقم الهوية'),
