@@ -8,10 +8,12 @@ using System.Windows.Forms;
 namespace Thuraiya{
     public class DateConverter {
         public static string toHijri(string greg){
-			return DBConnection.GetInstance().GetDataTable("select hijri from dates where greg='"+ greg +"'").Rows[0][0].ToString();
+			var rows = DBConnection.GetInstance().GetDataTable("select hijri from dates where greg=@p0",greg).Rows;
+			return rows.Count > 0 ? rows[0][0].ToString() : null;
 		}
 		public static string toGreg(string hijri){
-			return DBConnection.GetInstance().GetDataTable("select greg from dates where hijri='"+ hijri +"'").Rows[0][0].ToString();
+			var rows = DBConnection.GetInstance().GetDataTable("select greg from dates where hijri=@p0",hijri).Rows;
+			return rows.Count > 0 ? rows[0][0].ToString() : null;
 		}
     }
 }

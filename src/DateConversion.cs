@@ -9,8 +9,7 @@ namespace Thuraiya
     public class DateConversion : RTLForm
     {
         public DateConversion() : base() {
-            Text = "Date Conversion";
-            if (Config.of["main"].Get("RTL").Equals("true")) RightToLeft = RightToLeft.Yes;
+            Text = ar("Date Conversion");
             Size = new Size(400,180);
             Initialize();
         }
@@ -18,7 +17,7 @@ namespace Thuraiya
         
         private void Initialize()
         {
-            Image imgX = Image.FromFile(Config.of[@"main"].Get(@"delete.sign"));
+            Image imgX = Image.FromFile(Config.of[@"delete.sign"]);
             Label lH = new Label() { Text = "Hijri", Location = new Point(10, 13), Size = new Size(80, 25) };
             TextBox tHd = new TextBox() { Name = "tHd", Location = new Point(120, 10), Size = new Size(30, 20) , TextAlign =HorizontalAlignment.Center};
             TextBox tHm = new TextBox() { Name = "tHm", Location = new Point(150, 10), Size = new Size(30, 20) , TextAlign =HorizontalAlignment.Center};
@@ -70,5 +69,4 @@ namespace Thuraiya
             //bG2H.PerformClick();
         }
     }
-
 }

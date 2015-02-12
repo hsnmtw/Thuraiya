@@ -11,13 +11,20 @@ namespace Thuraiya{
 
 		private MySqlConnection conn;
 		private DBConnection(){
-			conn = new MySqlConnection (CS);
-			conn.Open ();
-			Console.WriteLine("MySQL version : {0}", conn.ServerVersion);
+			try{
+				conn = new MySqlConnection (CS);
+				conn.Open ();
+				LOG.info("MySQL version : {0}", conn.ServerVersion);
+			}catch(Exception ex){
+				LOG.error(ex.Message);
+				Environment.Exit(-1);
+			}finally{
+				
+			}
 		}
 
 		public void Close(){
-			conn.Close();
+			if(conn != null && conn.State == ConnectionState.Closed) conn.Close();
 		}
 
 		private static int _counter = 0;
@@ -25,21 +32,36 @@ namespace Thuraiya{
 			if(instance==null && _counter++==0) instance = new DBConnection();
 			return instance;
 		}
-
-		public DataTable GetDataTable(string sql){
-			DataTable dt = new DataTable ();
-			MySqlCommand cmd = new MySqlCommand (sql, conn);
-				using (MySqlDataAdapter a = new MySqlDataAdapter (cmd)) {
+		
+		public DataTable GetDataTable(string sql,params object[]prm){
+			//LOG.warn(sql);
+			var dt = new DataTable ();
+			try{
+				using (MySqlDataAdapter a = new MySqlDataAdapter (BuildCommand(sql,prm))) {
 					a.Fill (dt);
 				}
-
+			}catch(Exception ex){
+				LOG.error(ex.Message);
+			}
 			return dt;
 		}
-
-		public void Execute(string sql){
-			MySqlCommand cmd = new MySqlCommand (sql, conn);
-			cmd.ExecuteNonQuery ();
-
+		
+		private MySqlCommand BuildCommand(string sql,params object[]prm){
+			var cmd = new MySqlCommand (sql, conn);
+			for(int i=0;i<prm.Length;i++){
+				cmd.Parameters.AddWithValue(string.Format(@"@p{0}",i),prm[i]);
+			}
+			if(prm.Length>0)cmd.Prepare();
+			return cmd;
+		}
+		
+		public bool Execute(string sql,params object[]prm){
+			try{
+				return BuildCommand(sql,prm).ExecuteNonQuery () > 0;
+			}catch(Exception ex){
+				LOG.error(ex.Message);
+			}
+			return false;
 		}
 	}
 }

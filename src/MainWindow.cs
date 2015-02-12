@@ -12,10 +12,11 @@ namespace Thuraiya
 	public class MainWindow : RTLForm
 	{
 		
-		private readonly MainWindow _this;
-		
+		public static MainWindow _this;
+		private StatusBar mainStatusBar = new StatusBar();
 		public MainWindow () : base ()
 		{
+			Text = ar(@"Thuraiya - Wedding Occations Program");
 			_this = this;
 			IsMdiContainer = true;
 			Size = new Size (1100, 500);
@@ -27,13 +28,12 @@ namespace Thuraiya
 			var ms = new MenuStrip ();
 			ToolStripMenuItem tmsi, cmi;
 			//Dictionary<string, List<string>> ms;
-			Config config = Config.of ["main"];
-			string[] menus = config.Get ("m_Menu").Split (',');
+			string[] menus = Config.of["m_Menu"].Split (',');
 			foreach (string menu in menus) {
 				tmsi = new ToolStripMenuItem ();
 				tmsi.Text = ar(menu.Substring (2));
 				ms.Items.Add (tmsi);
-				string[] cmenus = config.Get (menu).Split (',');
+				string[] cmenus = Config.of[menu].Split (',');
 				foreach (string cmenu in cmenus) {
 					if (cmenu.Trim ().Length == 0)
 						continue;
@@ -46,17 +46,15 @@ namespace Thuraiya
 					cmi.Tag = cmenu;
 					tmsi.DropDownItems.Add (cmi);
 
-					if (config.Has (cmenu + ".icon"))
-						cmi.Image = Image.FromFile (config.Get (cmenu + ".icon"));
-
-					cmi.Click += new EventHandler (delegate(object s, EventArgs e) {
-                      
-						_this.GetType ().GetMethod (((ToolStripMenuItem)s).Tag.ToString () + "Action").Invoke (_this, null);
-						try { 
-						} catch (Exception ex) {
-							Console.WriteLine (DateTime.Now.ToString ("yyyyMMddHHmmss") + ":ERROR:" + ex.Message);
-						}
-					});
+					if (Config.of.ContainsKey (cmenu + ".icon"))
+						cmi.Image = Image.FromFile (Config.of[cmenu + ".icon"]);
+						cmi.Click += new EventHandler (delegate(object s, EventArgs e) {						
+							try { 
+								_this.GetType ().GetMethod (((ToolStripMenuItem)s).Tag.ToString () + "Action").Invoke (_this, null);
+							} catch (Exception ex) {
+								LOG.error(ex.Message);
+							}
+						});
 				}
 			}
 
@@ -86,6 +84,13 @@ namespace Thuraiya
 			cal.Show ();
 		}
 
+		public void NationalitiesAction ()
+		{
+			Nationalities nat = new Nationalities();
+			nat.MdiParent = _this;
+			nat.Show ();
+		}		
+		
 		public void ContractsAction ()
 		{
 			Contracts con = new Contracts ();

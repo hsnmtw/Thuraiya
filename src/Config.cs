@@ -6,45 +6,28 @@ using System.Windows.Forms;
 
 namespace Thuraiya{
   
-  public class Config{
+  public class Config : Dictionary<string, string>{
 
-      public static readonly Dictionary<string, Config> of = new Dictionary<string, Config> 
-      { 
-            { "main",        new Config(@"config\\config.txt") }, 
-            { "f.contracts", new Config(@"config\\forms\\Contracts.txt") }, 
-      };
+      public static Config of = null;
 
-      private List<string> _props;
-      private readonly Dictionary<string,string> properties;
-      private Config(string configFile) : base() {
-          properties = new Dictionary<string, string>();
-          _props = new List<string>();
+      private Config() : base() {
         try{
           
-          string[]lines = File.ReadAllText(configFile,Encoding.GetEncoding("windows-1256")).Split('\n');
-            foreach(string line in lines){
-              string[] pval = line.Split(':');
-              properties[pval[0]] = pval[1].Trim();
-              _props.Add(pval[0]);
-            }
-          
+			using(var dt = DBConnection.GetInstance().GetDataTable(@"select prp,val from thrdb.config")){
+				for(int i=0;i<dt.Rows.Count;i++){
+					Add(dt.Rows[i][@"prp"].ToString() , dt.Rows[i][@"val"].ToString());
+				}
+			}
+			
         }catch(Exception ex){
-          string error = (DateTime.Now.ToString("yyyyMMddHHmmss")+":ERROR:"+ex.Message);
-          MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+          MessageBox.Show(LOG.error(ex.Message), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
           Environment.Exit(0);
         }
       }
-
-      public bool Has(string prop)
-      {
-          return properties.ContainsKey(prop);
-      }
-      public string Get(string prop){
-        if(!Has(prop)) return prop;
-        return properties[prop];
-      }
-
-      public List<string> props { get { return _props; } }
+	  
+	  public static void Initialize(){
+		  if(of==null) of = new Config();
+	  }
   }
 
 }

@@ -17,19 +17,21 @@ using System.Reflection;
 [assembly: AssemblyTrademark("hussain.mutawa@gmail.com")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en-NZ")]
-[assembly: CLSCompliant(true)]
+//[assembly: CLSCompliant(true)]
 
 namespace Thuraiya
 {
 
-	public class Program : RTLForm
+	public class Program
 	{
 		[STAThreadAttribute ()]
 		public static void Main (string[]args){
 			//new Thread (delegate() {}).Start();
-			DBConnection.GetInstance();
-			Application.EnableVisualStyles();
-			Application.Run (new MainWindow ());
+			if(DBConnection.GetInstance()!=null){
+				Config.Initialize();
+				Application.EnableVisualStyles();
+				Application.Run (new MainWindow ());
+			}
 		}
 	}
 

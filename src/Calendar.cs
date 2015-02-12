@@ -10,7 +10,7 @@ namespace Thuraiya
     {
         public Calendar(int year) : base()
         {
-            Text = "Calendar";
+            Text = ar("Calendar");
             WindowState = FormWindowState.Maximized;
             YearView viewer = new YearView(year);
             YearSelector selector = new YearSelector(viewer);
@@ -22,7 +22,6 @@ namespace Thuraiya
         private YearView _viewer;
         public YearSelector(YearView viewer) : base(){
             _viewer = viewer;
-            if (Config.of["main"].Get("RTL").Equals("true")) RightToLeft = RightToLeft.Yes; 
             BorderStyle = BorderStyle.Fixed3D;
             Left = 10; Top = 68; Width = 1040; Height = 30;
             Initialize();
@@ -56,7 +55,7 @@ namespace Thuraiya
 
         private void Initialize()
         {
-            string[] Days = Config.of["main"].Get("Days").Split(',');
+            string[] Days = Config.of["Days"].Split(',');
             for (int i = 0; i < 37; i++)
             {
                 Controls.Add(new CalLabel(Days[i % 7], 100 + i * 25, 10, 23, Color.Gray) { ForeColor = Color.White });
@@ -66,7 +65,7 @@ namespace Thuraiya
             for (int m = 1; m < 13; m++)
             {
                 labels[m] = new Dictionary<int, Label>();
-                Controls.Add(new CalLabel(Config.of["main"].Get("MONTH."+m), 10, 10 + (16 * m), 88, m % 2 == 0 ? Color.WhiteSmoke : Color.White));
+                Controls.Add(new CalLabel(Config.of["MONTH."+m], 10, 10 + (16 * m), 88, m % 2 == 0 ? Color.WhiteSmoke : Color.White));
                 for (int i = 0; i < 37; i++)
                 {
                     labels[m][i] = new CalLabel("", 100 + i * 25, 10 + (16 * m), 23, m % 2 == 0 ? Color.WhiteSmoke : Color.White);
@@ -79,7 +78,7 @@ namespace Thuraiya
 
         public void Refill(int year)
         {
-            string[] Days = Config.of["main"].Get("Days").Split(',');
+            string[] Days = Config.of["Days"].Split(',');
             
 
             for (int m = 1; m < 13; m++)
@@ -112,7 +111,4 @@ namespace Thuraiya
             }
         }
     }
-
-    
-
 }
