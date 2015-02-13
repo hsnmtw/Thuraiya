@@ -103,7 +103,7 @@ insert into thrdb.config(prp,val) values
   ('Date_Conversion.icon','assets\\date_from-26.png'),
   ('Contracts.data','data\\Contracts.csv'),
   ('Clients.data','data\\Clients.csv'),
-  ('delete.sign','assets\\Programming\\delete_sign-26.png'),
+  ('delete.sign','assets\\delete_sign-26.png'),
   ('Days','SU,MO,TU,WE,TH,FR,SA'),
   ('RTL','true')
 ;

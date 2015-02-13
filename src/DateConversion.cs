@@ -31,7 +31,7 @@ namespace Thuraiya
             TextBox tGy = new TextBox() { Name = "tHy", Location = new Point(180, 40), Size = new Size(50, 20) , TextAlign =HorizontalAlignment.Center};
             PictureBox gX = new PictureBox() { Name = "gX", Location = new Point(235, 40), Size = new Size(20, 20), Image = imgX, Cursor = Cursors.Hand, SizeMode = PictureBoxSizeMode.StretchImage };
             Button bG2H = new Button() { Name = "bG2H", Location = new Point(280, 40), Size = new Size(80, 20), Text = "To Hijri" };
-
+//LOG.info("LLL");
             object[] controls = new object[] { lH, lG, tHd, tHm, tHy, hX, bH2G, tGd, tGm, tGy, gX, bG2H };
             foreach(Control control in controls)
             { Controls.Add(control); }

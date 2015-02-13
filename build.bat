@@ -4,6 +4,7 @@ csc /reference:".\lib\mysql-connector-v2.0\MySql.Data.dll"^
     /utf8output^
 	/nologo^
 	/win32icon:assets\app.ico^
-	/target:exe^
+	/target:winexe^
 	/out:Thuraiya.exe^
 	/recurse:src\*.cs
+pause

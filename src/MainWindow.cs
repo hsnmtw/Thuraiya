@@ -21,6 +21,8 @@ namespace Thuraiya
 			IsMdiContainer = true;
 			Size = new Size (1100, 500);
 			BuildMenu ();
+			
+			//new DateConversion().Show();
 		}
 
 		private void BuildMenu ()

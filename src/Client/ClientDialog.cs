@@ -41,7 +41,7 @@ namespace Thuraiya
 			govid.Text = row["govid"].ToString();
 			
 			ConvertDateAction(null,null);
-			//ReloadContracts();
+			ReloadContracts();
 			mobile.ReadOnly = true;
 		}
 		
@@ -100,7 +100,7 @@ namespace Thuraiya
 			mobile   = new TextBox		 (){};
 			
 			lname = new Label		 	 (){Text = ar("Name")};
-			name  = new TextBox			 (){Width = 200 };
+			name  = new TextBox			 (){};
 			
 			lnationality   = new Label	 (){Text = ar("Nationality")};
 			nationality    = new ComboBox(){};
@@ -112,7 +112,7 @@ namespace Thuraiya
 			govid_poi  = new TextBox	 (){};
 			
 			lgovid_doi = new Label		 (){Text = ar("NID DOI")};
-			govid_doi  = new DTPicker	 (){Width=170};
+			govid_doi  = new DTPicker	 (){CustomFormat = "dd/MM/yyyy"};
 			hijri    = new TextBox		 (){ReadOnly=true};
 
 			laddress = new Label		 (){Text = ar("Address")};
@@ -126,40 +126,48 @@ namespace Thuraiya
 			
 
 			
-			lcontracts= new Label		 (){Location=new Point( 5,170),Text = ar("Pay Slips")};				
+			lcontracts= new Label		 (){Text = ar("Contracts")};				
 			contracts = new CustomDataGridView	 (){Location=new Point(90,170), Size=new Size(290,140)};
 				
 			var no = new Button(){ Text = ar(@"Cancel")     , Location = new Point(290,10), Size=new Size(60,25) };
 			var ok = new Button(){ Text = ar(@"Save")       , Location = new Point(200,10), Size=new Size(80,25) };
 			
 			var bPanel = new RTLPanel() {Dock = DockStyle.Bottom, Height = 35};
-			var mPanel = new TableLayoutPanel() {Dock = DockStyle.Fill, ColumnCount = 2};
+			var mPanel = new RTLPanel() {Dock = DockStyle.Fill};
 			
 			foreach(var con in new Button[]{no,ok}){
 				bPanel.Controls.Add(con);
 			}
 			
-			var pgovid_doi = new FlowLayoutPanel(){WrapContents=false, Dock = DockStyle.Top,Height=27};
-			pgovid_doi.DockPadding.All=0;
-			pgovid_doi.Controls.Add(govid_doi);
-			pgovid_doi.Controls.Add(hijri);
-			
-			
-			var cntrls = new object[]{
-				lmobile,mobile,
+			object[] cntrls = {
 				lname,name,
-				lnationality,nationality,
-				lgovid,govid,
-				lgovid_poi,govid_poi,
-				lgovid_doi,pgovid_doi,
+				lmobile,mobile,lnationality,nationality,
+				lgovid,govid,lgovid_poi,govid_poi,
+				lgovid_doi,govid_doi,hijri,
+				ltel1,tel1,ltel2,tel2,
 				laddress,address,
-				ltel1,tel1,
-				ltel2,tel2
+				lcontracts,contracts
 			};
 			
-			foreach(var con in cntrls){
-				mPanel.Controls.Add((Control)con);
+			
+			int[,] bounds = {
+				{ 10, 10+3, 70, 20},{ 90, 10,350, 20},
+				{ 10, 40+3, 70, 20},{ 90, 40,110, 20},{210, 40+3, 70, 20},{290, 40,150, 20},
+				{ 10, 70+3, 70, 20},{ 90, 70,110, 20},{210, 70+3, 70, 20},{290, 70,150, 20},
+				{ 10,100+3, 70, 20},{ 90,100,110, 20},{210,100+0, 70, 20},
+				{ 10,130+3, 70, 20},{ 90,130,110, 20},{210,130+3, 70, 20},{290,130,150, 20},
+				{ 10,160+3, 70, 20},{ 90,160,350, 20},
+				{ 10,190+3, 70, 20},{ 90,190,350,120},
+			};
+			
+						//cntrls.Length
+			for(int c=0;c<cntrls.Length;c++){
+				var con = (Control)cntrls[c];
+				mPanel.Controls.Add(con);
+				con.SetBounds(bounds[c,0],bounds[c,1],bounds[c,2],bounds[c,3]);
 			}
+			
+			
 			
 			CancelButton = no;
 			AcceptButton = ok;
@@ -178,7 +186,11 @@ namespace Thuraiya
 			ok.Click+=new EventHandler(AddAction);
 			
 			Controls.Add(bPanel);
-			Controls.Add(mPanel);			
+			Controls.Add(mPanel);
+			
+			
+			
+			
 		}		
 	}
 }
