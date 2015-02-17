@@ -27,7 +27,7 @@ namespace Thuraiya
 		public ContractDialog(string uid) : this(){
 			id = int.Parse(uid);
 			this.action = "update";
-			DataTable dt = con.GetDataTable(@"select * from thrdb.contract where ID=@p0",id);
+			DataTable dt = con.GetDataTable(@"select * from contract where ID=@p0",id);
 			client.SelectedValue = dt.Rows[0]["client"].ToString();
 			price.Text = dt.Rows[0]["price"].ToString();
 			
@@ -41,7 +41,7 @@ namespace Thuraiya
 		private void ReCalculateBalance(){
 			paied.Text = con.GetDataTable(@"select sum(x.paied) 
 											  from (select a.paied 
-													  from thrdb.payslip a 
+													  from payslip a 
 													 where a.contract=@p0 
 													 union 
 													select 0) x;",id).Rows[0][0].ToString();
@@ -50,12 +50,12 @@ namespace Thuraiya
 		}
 				
 		private void NewID(){
-			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from thrdb.contract a) b;";
+			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from contract a) b;";
 			id = int.Parse(con.GetDataTable(query).Rows[0][0].ToString());
 		}
 		
 		private void ReloadPaySlips(){
-			var sql = @"select on_date 'On Date',id `ID`,paied `Paied` from thrdb.payslip where contract=@p0";
+			var sql = @"select on_date 'On Date',id `ID`,paied `Paied` from payslip where contract=@p0";
 			var dt = con.GetDataTable(sql, id);
 			foreach(DataColumn col in dt.Columns){
 				col.ColumnName = ar(col.ColumnName);
@@ -80,9 +80,9 @@ namespace Thuraiya
 		}
 		
 		public void AddAction(object s,EventArgs ea){
-			var sql = @"insert into thrdb.contract (id,client,on_date,price,occasion) values (@p0,@p1,@p2,@p3,@p4)";
+			var sql = @"insert into contract (id,client,on_date,price,occasion) values (@p0,@p1,@p2,@p3,@p4)";
 			if("update".Equals(action)){
-				sql = @"update thrdb.contract
+				sql = @"update contract
 						   set client  = @p1
 							 , on_date = @p2
 							 , price   = @p3

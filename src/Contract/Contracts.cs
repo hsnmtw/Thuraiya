@@ -19,7 +19,7 @@ namespace Thuraiya
 		}
 
 		private void ReloadData() {
-			var sql = @"select * from thrdb.v_contracts;";
+			var sql = @"select * from v_contracts;";
 			var dt = DBConnection.GetInstance ().GetDataTable (sql);
 			foreach(DataColumn col in dt.Columns){
 				col.ColumnName = ar(col.ColumnName);
@@ -82,8 +82,14 @@ namespace Thuraiya
 		{
 			var confirm = MessageBox.Show(ar(@"Are you sure of deleting this record?"),ar(@"Warning"),MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
 			if(confirm==DialogResult.Yes){
-				var sql = @"delete from thrdb.contract where id=@p0";
-				if(DBConnection.GetInstance().Execute(sql,dg.SelectedRows[0].Cells[0].Value)){
+				var sql  = @"select count(1) from payslip where contract=@p0";
+				var p0   = dg.SelectedRows[0].Cells[0].Value;
+				var rows = int.Parse(con.GetDataTable(sql,p0).Rows[0][0].ToString());
+				
+				if(rows>0){ throw new Exception(@"Cannot delete a contract that has payslips:"+rows); }
+				
+				sql = @"delete from contract where id=@p0";
+				if(DBConnection.GetInstance().Execute(sql,p0)){
 					MessageBox.Show(ar(@"Your request has been successfully processed"),ar(@"Success"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 					ReloadData();
 				}else{

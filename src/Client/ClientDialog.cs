@@ -26,7 +26,7 @@ namespace Thuraiya
 			
 			this.action = "update";
 			DataTable dt = con.GetDataTable(@"select mobile,name,nationality,govid,govid_doi,govid_poi,address,tel1,tel2 
-											    from thrdb.client where mobile=@p0",uid);
+											    from client where mobile=@p0",uid);
 			var row = dt.Rows[0];
 			nationality.SelectedValue = (int)row["nationality"];
 			
@@ -47,8 +47,8 @@ namespace Thuraiya
 		
 		private void ReloadContracts(){
 			var sql = @"select a.`ID`,a.`On Date`,a.`Price`,a.`Paied`,a.`Balance` 
-						  from thrdb.v_contracts a 
-			              join thrdb.contract    b
+						  from v_contracts a 
+			              join contract    b
 			                on a.ID=b.id 
 			             where b.client=(@p0)";
 			var dt = con.GetDataTable(sql, mobile.Text);
@@ -68,7 +68,7 @@ namespace Thuraiya
 			var sql = @"insert into thrdb.client (mobile,name,nationality,govid,govid_poi,govid_doi,address,tel1,tel2) 
 										  values (@p0,@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8)";
 			if("update".Equals(action)){
-				sql = @"update thrdb.client
+				sql = @"update client
 						   set name		   = @p1
 							 , nationality = @p2
 				             , govid	   = @p3

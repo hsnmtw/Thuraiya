@@ -79,6 +79,14 @@ namespace Thuraiya
 				, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
+		
+		public void DatesAction ()
+		{
+			Dates cal = new Dates ();
+			cal.MdiParent = _this;
+			cal.Show ();
+		}
+		
 		public void CalendarAction ()
 		{
 			Calendar cal = new Calendar ();

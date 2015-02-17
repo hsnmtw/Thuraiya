@@ -19,7 +19,7 @@ namespace Thuraiya
 		}
 
 		private void ReloadData() {
-			var sql = @"select * from thrdb.payslip;";
+			var sql = @"select * from payslip;";
 			var dt = DBConnection.GetInstance ().GetDataTable (sql);
 			foreach(DataColumn col in dt.Columns){
 				col.ColumnName = ar(col.ColumnName);
@@ -80,7 +80,7 @@ namespace Thuraiya
 		{
 			var confirm = MessageBox.Show(ar(@"Are you sure of deleting this record?"),ar(@"Warning"),MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
 			if(confirm==DialogResult.Yes){
-				var sql = @"delete from thrdb.payslip where id=@p0";
+				var sql = @"delete from payslip where id=@p0";
 				if(con.Execute(sql,dg.SelectedRows[0].Cells[0].Value)){
 					MessageBox.Show(ar(@"Your request has been successfully processed"),ar(@"Success"), MessageBoxButtons.OK, MessageBoxIcon.Information);
 					ReloadData();

@@ -23,21 +23,21 @@ namespace Thuraiya
 		public NationalityDialog(string uid) : this(){
 			id = int.Parse(uid);
 			this.action = "update";
-			DataTable dt = con.GetDataTable(@"select country from thrdb.nationality where ID=@p0",id);
+			DataTable dt = con.GetDataTable(@"select country from nationality where ID=@p0",id);
 			country.Text = dt.Rows[0]["country"].ToString();
 		}
 		
 				
 		private void NewID(){
-			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from thrdb.nationality a) b;";
+			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from nationality a) b;";
 			id = int.Parse(con.GetDataTable(query).Rows[0][0].ToString());
 		}
 		
 		
 		public void AddAction(object s,EventArgs ea){
-			var sql = @"insert into thrdb.nationality (id,country) values (@p0,@p1)";
+			var sql = @"insert into nationality (id,country) values (@p0,@p1)";
 			if("update".Equals(action)){
-				sql = @"update thrdb.nationality
+				sql = @"update nationality
 						   set country = @p1
 						 where id = @p0";
 			}

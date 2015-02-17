@@ -24,7 +24,7 @@ namespace Thuraiya
 		public PaySlipDialog(string uid) : this(){
 			id = int.Parse(uid);
 			this.action = "update";
-			DataTable dt = con.GetDataTable(@"select * from thrdb.v_payslips where ID=@p0",id);
+			DataTable dt = con.GetDataTable(@"select * from v_payslips where ID=@p0",id);
 			pid.Text = uid;
 			client.Text = dt.Rows[0]["Client"].ToString();
 			contract.Text = dt.Rows[0]["Contract"].ToString();
@@ -49,7 +49,7 @@ namespace Thuraiya
 		}
 	
 		private void NewID(){
-			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from thrdb.payslip a) b;";
+			var query = @"select max(b.id)+1 from (select 0 as `id` union select max(a.id) from payslip a) b;";
 			id = int.Parse(con.GetDataTable(query).Rows[0][0].ToString());
 		}
 		
@@ -58,9 +58,9 @@ namespace Thuraiya
 		}
 		
 		public void AddAction(object s,EventArgs ea){
-			var sql = @"insert into thrdb.payslip (id,contract,on_date,paied,notes) values (@p0,@p1,@p2,@p3,@p4)";
+			var sql = @"insert into payslip (id,contract,on_date,paied,notes) values (@p0,@p1,@p2,@p3,@p4)";
 			if("update".Equals(action)){
-				sql = @"update thrdb.payslip
+				sql = @"update payslip
 						   set contract = @p1
 							 , on_date  = @p2
 							 , paied    = @p3

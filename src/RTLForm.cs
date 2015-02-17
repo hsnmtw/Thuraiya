@@ -18,7 +18,7 @@ namespace Thuraiya{
 		}
 		public string ar(string en){
 			if(!RTL) return en;
-			var dt =  con.GetDataTable("select arabic from thrdb.lang where english = @p0;",en);
+			var dt =  con.GetDataTable("select arabic from lang where english = @p0;",en);
 			if(dt.Rows.Count==0) {return en;} else { lang[en] = dt.Rows[0]["arabic"].ToString(); }
 			return lang[en];
 		}

@@ -13,7 +13,7 @@ namespace Thuraiya{
       private Config() : base() {
         try{
           
-			using(var dt = DBConnection.GetInstance().GetDataTable(@"select prp,val from thrdb.config")){
+			using(var dt = DBConnection.GetInstance().GetDataTable(@"select prp,val from config")){
 				for(int i=0;i<dt.Rows.Count;i++){
 					Add(dt.Rows[i][@"prp"].ToString() , dt.Rows[i][@"val"].ToString());
 				}
